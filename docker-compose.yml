@@ -1,4 +1,55 @@
 services:
+  traefik:
+    image: traefik:v2.10
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+    labels:
+      - "traefik.http.middlewares.cors.headers.accesscontrolalloworiginlist=http://localhost:3000"
+      - "traefik.http.middlewares.cors.headers.accesscontrolallowmethods=GET,POST,PUT,DELETE,OPTIONS"
+      - "traefik.http.middlewares.cors.headers.accesscontrolallowheaders=Authorization,Content-Type"
+      - "traefik.http.routers.frontend.middlewares=cors"
+      - "traefik.http.routers.user-service.middlewares=cors"
+      - "traefik.http.middlewares.auth.jwt=true"
+      - "traefik.http.middlewares.auth.jwt.header=Authorization"
+      - "traefik.http.middlewares.auth.jwt.secret=${JWT_SECRET}"
+      - "traefik.http.routers.user-service.middlewares=auth"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - club-manager-network
+  
+  frontend:
+    build: ./frontend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.frontend.entrypoints=web"
+    networks:
+      - club-manager-network
+  
+  user-service:
+    build: ./users/src/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.user-service.rule=PathPrefix(`/users`)"
+      - "traefik.http.routers.user-service.entrypoints=web"
+      - "traefik.http.services.user-service.loadbalancer.server.port=8080"
+    environment:
+      DB_URL: "postgres://${DB_USER}:${USER_DB_PASSWORD}@user-db:5432/${USER_DB}?sslmode=disable"
+    depends_on:
+      user-db:
+        condition: service_healthy
+    networks:
+      - club-manager-network
+    restart: unless-stopped
+
   user-db:
     image: postgres:16-alpine
     environment:
@@ -59,10 +110,31 @@ services:
       - club-manager-network
     restart: unless-stopped
 
+  licence-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${LICENCE_DB}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${LICENCE_DB_PASSWORD}
+    volumes:
+      - licence-db-data:/var/lib/postgresql/data
+      - ./licenses/sql:/docker-entrypoint-initdb.d
+    ports:
+      - "${LICENCE_DB_PORT}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U club_manager -d licence_db"]
+      interval: 5s 
+      timeout: 5s 
+      retries: 5 
+    networks:
+      - club-manager-network
+    restart: unless-stopped
+
 volumes:
   user-db-data:
   event-db-data:
   post-db-data:
+  licence-db-data:
 
 networks:
   club-manager-network:

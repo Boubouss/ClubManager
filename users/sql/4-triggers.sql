@@ -23,7 +23,6 @@ BEFORE UPDATE ON roles
 FOR EACH ROW 
 EXECUTE FUNCTION update_updated_at();
 
-
 DROP TRIGGER IF EXISTS trigger_log_users ON users;
 DROP TRIGGER IF EXISTS trigger_log_members ON members;
 DROP TRIGGER IF EXISTS trigger_log_clubs ON clubs;
