@@ -1,10 +1,21 @@
 package handler
 
 import (
-    "net/http"
-    "ClubManager/frontend/internal/views/home"
+	"ClubManager/frontend/internal/views/pages"
+
+	"github.com/labstack/echo/v5"
 )
 
-func HelloHandler(w http.ResponseWriter, r *http.Request) {
-  home.Home().Render(r.Context(), w)
+type HomeHandler struct {}
+
+func NewHomeHandler() HomeHandler {
+  return HomeHandler{}
+}
+
+func (h *HomeHandler) HandleLandingPage(c *echo.Context) error {
+  return render(c, pages.Landing())
+}
+
+func (h *HomeHandler) HandleHomePage(c *echo.Context) error {
+  return render(c, pages.Home())
 }

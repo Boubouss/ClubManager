@@ -1,0 +1,25 @@
+package layout
+
+css Navigation() {
+
+}
+
+templ Header(isAuth bool) {
+  <nav>
+    if isAuth {
+      <span hx-get="/home" hx-trigger="click" hx-target="#page" hx-swap="outerHTML">
+        ClubManager
+      </span>
+      <span hx-get="/" hx-trigger="click" hx-target="#page" hx-swap="outerHTML">
+        Déconnexion
+      </span>
+    } else {
+      <span hx-get="/" hx-trigger="click" hx-target="#page" hx-swap="outerHTML">
+        ClubManager
+      </span>
+      <span hx-get="/user/connexion" hx-trigger="click" hx-target="#page" hx-swap="outerHTML">
+        Connexion / Inscription
+      </span>
+    }
+  </nav>
+}
