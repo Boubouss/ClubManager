@@ -15,13 +15,13 @@ func main() {
   app.GET("/", homeHandler.HandleLandingPage)
   app.GET("/home", homeHandler.HandleHomePage)
 
-  user := app.Group("/user")
+  auth := app.Group("/user")
 
-  user.GET("/connexion", userHandler.HandleConnexion)
-  user.GET("/register", userHandler.HandleRegisterForm)
-  user.GET("/login", userHandler.HandleLoginForm)
-  user.POST("/login", userHandler.HandleLoginUser)
-  user.POST("/register", userHandler.HandleRegisterUser)
+  auth.GET("/connexion", userHandler.HandleConnexion)
+  auth.GET("/register", userHandler.HandleRegisterForm)
+  auth.GET("/login", userHandler.HandleLoginForm)
+  auth.POST("/login", userHandler.HandleLoginUser)
+  auth.POST("/register", userHandler.HandleRegisterUser)
   
   app.Start(":3000")
 }

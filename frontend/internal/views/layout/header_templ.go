@@ -43,12 +43,12 @@ func Header(isAuth bool) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if isAuth {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<span hx-get=\"/home\" hx-trigger=\"click\" hx-target=\"#page\" hx-swap=\"outerHTML\">ClubManager</span> <span hx-get=\"/\" hx-trigger=\"click\" hx-target=\"#page\" hx-swap=\"outerHTML\">Déconnexion</span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<span hx-get=\"/home\" hx-trigger=\"click\" hx-target=\"#page\" hx-swap=\"outerHTML\" style=\"cursor: pointer;\">ClubManager</span> <span hx-get=\"/\" hx-trigger=\"click\" hx-target=\"#page\" hx-swap=\"outerHTML\" style=\"cursor: pointer;\">Déconnexion</span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<span hx-get=\"/\" hx-trigger=\"click\" hx-target=\"#page\" hx-swap=\"outerHTML\">ClubManager</span> <span hx-get=\"/user/connexion\" hx-trigger=\"click\" hx-target=\"#page\" hx-swap=\"outerHTML\">Connexion / Inscription</span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<span hx-get=\"/\" hx-trigger=\"click\" hx-target=\"#page\" hx-swap=\"outerHTML\" style=\"cursor: pointer;\">ClubManager</span> <span hx-get=\"/user/connexion\" hx-trigger=\"click\" hx-target=\"#page\" hx-swap=\"outerHTML\" style=\"cursor: pointer;\">Connexion / Inscription</span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

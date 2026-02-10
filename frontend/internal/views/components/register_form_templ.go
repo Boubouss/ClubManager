@@ -29,7 +29,7 @@ func RegisterForm() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form hx-post=\"/user/register\" hx-target=\"#page\" hx-swap=\"outerHTML\"><label for=\"username\">Pseudo</label> <input type=\"text\" name=\"username\"> <label for=\"email\">Email</label> <input type=\"email\" name=\"email\"> <label for=\"password\">Mot de passe</label> <input type=\"password\" name=\"password\"> <label for=\"phonenumber\">Portable</label> <input type=\"tel\" name=\"phonenumber\" pattern=\"[0-9]{10}\"> <input type=\"submit\"> Register Form</form>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form hx-post=\"/user/register\" hx-target=\"#page\" hx-swap=\"outerHTML\"><label for=\"username\">Pseudo</label> <input type=\"text\" name=\"username\"> <label for=\"email\">Email</label> <input type=\"email\" name=\"email\"> <label for=\"password\">Mot de passe</label> <input type=\"password\" name=\"password\"> <label for=\"phonenumber\">Portable</label> <input type=\"tel\" name=\"phonenumber\" pattern=\"[0-9]{10}\"> <input type=\"submit\"></form>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
