@@ -2,7 +2,7 @@ package server
 
 import (
 	"ClubManager/users/internal/service"
-	"ClubManager/users/internal/types"
+	"ClubManager/shared/models"
 	"ClubManager/shared/proto"
 	"context"
 	"net"
@@ -37,7 +37,7 @@ func NewUserServiceServer(svc service.UserService) *UserServiceServer {
 }
 
 func (s *UserServiceServer) CreateUser(ctx context.Context, req *proto.CreateUserRequest) (*proto.CreateUserResponse, error) {
-  user := &types.UserForm{
+  user := &models.UserForm{
     Username: req.Username,
     Email: req.Email,
     Phonenumber: req.Phonenumber,

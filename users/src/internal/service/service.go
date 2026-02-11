@@ -6,11 +6,11 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 
-	"ClubManager/users/internal/types"
+	"ClubManager/shared/models"
 )
 
 type UserService interface {
-  CreateUser(context.Context, *types.UserForm) (uuid.UUID, error)
+  CreateUser(context.Context, *models.UserForm) (uuid.UUID, error)
 }
 
 type userService struct {
@@ -23,7 +23,7 @@ func NewUserService(db *pgx.Conn) *userService {
   }
 }
 
-func (s *userService) CreateUser(ctx context.Context, data *types.UserForm) (uuid.UUID, error) {
+func (s *userService) CreateUser(ctx context.Context, data *models.UserForm) (uuid.UUID, error) {
   // Extraire la db depuis le context
   // Créer la requete sql à partir des infos dans le UserForm 
   // Jouer la requete et récuperer le uuid généré

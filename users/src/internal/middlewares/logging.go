@@ -2,7 +2,7 @@ package middlewares
 
 import (
 	"ClubManager/users/internal/service"
-	"ClubManager/users/internal/types"
+	"ClubManager/shared/models"
 	"context"
 	"time"
 
@@ -20,7 +20,7 @@ func NewLoggingService(next service.UserService) service.UserService {
   }
 }
 
-func (s *loggingService) CreateUser(ctx context.Context, data *types.UserForm) (userId uuid.UUID, err error) {
+func (s *loggingService) CreateUser(ctx context.Context, data *models.UserForm) (userId uuid.UUID, err error) {
   defer func(begin time.Time){
     logrus.WithFields(logrus.Fields{
       "type": "CreateUser",
