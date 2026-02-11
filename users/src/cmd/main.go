@@ -1,8 +1,15 @@
 package main
 
 import (
+	"ClubManager/users/internal/middlewares"
+	"ClubManager/users/internal/server"
+	"ClubManager/users/internal/service"
+	"context"
 	"flag"
 	"fmt"
+	"os"
+
+	"github.com/jackc/pgx/v5"
 )
 
 
@@ -10,7 +17,16 @@ func main() {
   port := flag.String("port", ":3000", "gRPC port for user service")
   flag.Parse()
 
-  fmt.Println(fmt.Printf("Listening on port %s", *port))
+  ctx := context.Background()
 
-  // svc := service.NewUserService(db *pgx.Conn)
+  db, err := pgx.Connect(ctx, os.Getenv("DB_URL"))
+  if err != nil {
+    fmt.Println("Connection to database failed")
+    fmt.Println(os.Getenv("DB_URL"))
+    return
+  }
+
+  svc := middlewares.NewLoggingService(service.NewUserService(db))
+
+  server.MakeServerAndRun(*port, svc)
 }

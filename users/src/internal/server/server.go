@@ -3,14 +3,14 @@ package server
 import (
 	"ClubManager/users/internal/service"
 	"ClubManager/users/internal/types"
-	"ClubManager/users/proto"
+	"ClubManager/shared/proto"
 	"context"
 	"net"
 
 	"google.golang.org/grpc"
 )
 
-func makeServerAndRun(addr string, svc service.UserService) error {
+func MakeServerAndRun(addr string, svc service.UserService) error {
   userServer := NewUserServiceServer(svc)
 
   ln, err := net.Listen("tcp", addr)
