@@ -1,0 +1,21 @@
+
+syntax = "proto3";
+
+package proto;
+
+option go_package = "ClubManager/shared;proto";
+
+service UserService {
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {}
+}
+
+message CreateUserRequest {
+  string username = 1;
+  string email = 2;
+  string password = 3;
+  string phonenumber = 4;
+}
+
+message CreateUserResponse {
+  string id = 1;
+}
