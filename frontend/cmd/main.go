@@ -23,5 +23,5 @@ func main() {
   auth.POST("/login", userHandler.HandleLoginUser)
   auth.POST("/register", userHandler.HandleRegisterUser)
   
-  app.Start(":3000")
+  app.Start(":8080")
 }

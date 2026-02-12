@@ -6,16 +6,6 @@ services:
       - "--providers.docker=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-    labels:
-      - "traefik.http.middlewares.cors.headers.accesscontrolalloworiginlist=http://localhost:3000"
-      - "traefik.http.middlewares.cors.headers.accesscontrolallowmethods=GET,POST,PUT,DELETE,OPTIONS"
-      - "traefik.http.middlewares.cors.headers.accesscontrolallowheaders=Authorization,Content-Type"
-      - "traefik.http.routers.frontend.middlewares=cors"
-      - "traefik.http.routers.user-service.middlewares=cors"
-      - "traefik.http.middlewares.auth.jwt=true"
-      - "traefik.http.middlewares.auth.jwt.header=Authorization"
-      - "traefik.http.middlewares.auth.jwt.secret=${JWT_SECRET}"
-      - "traefik.http.routers.user-service.middlewares=auth"
     ports:
       - "80:80"
       - "443:443"
@@ -26,20 +16,23 @@ services:
       - club-manager-network
   
   frontend:
-    build: ./frontend
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=PathPrefix(`/`)"
       - "traefik.http.routers.frontend.entrypoints=web"
       - "traefik.http.services.frontend.loadbalancer.server.port=8080"
-      - "traefik.http.routers.frontend.middlewares=cors"
     volumes:
-      - ./shared/proto:/app/shared/proto
+      - ./shared:/shared
     networks:
       - club-manager-network
   
   user-service:
-    build: ./users/src/
+    build:
+      context: .
+      dockerfile: ./users/src/Dockerfile
     labels:
       - "traefik.enable=false"
     environment:
@@ -48,7 +41,7 @@ services:
       user-db:
         condition: service_healthy
     volumes:
-      - ./shared/proto:/app/shared/proto
+      - ./shared:/shared
     networks:
       - club-manager-network
     restart: unless-stopped
@@ -64,6 +57,8 @@ services:
       - ./users/sql:/docker-entrypoint-initdb.d
     ports:
       - "${USER_DB_PORT}:5432"
+    labels:
+      - "traefik.enable=false"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U club_manager -d user_db"]
       interval: 5s 
@@ -84,6 +79,8 @@ services:
       - ./events/sql:/docker-entrypoint-initdb.d
     ports:
       - "${EVENT_DB_PORT}:5432"
+    labels:
+      - "traefik.enable=false"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U club_manager -d event_db"]
       interval: 5s 
@@ -104,6 +101,8 @@ services:
       - ./posts/sql:/docker-entrypoint-initdb.d
     ports:
       - "${POST_DB_PORT}:5432"
+    labels:
+      - "traefik.enable=false"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U club_manager -d post_db"]
       interval: 5s 
@@ -124,6 +123,8 @@ services:
       - ./licenses/sql:/docker-entrypoint-initdb.d
     ports:
       - "${LICENCE_DB_PORT}:5432"
+    labels:
+      - "traefik.enable=false"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U club_manager -d licence_db"]
       interval: 5s 
